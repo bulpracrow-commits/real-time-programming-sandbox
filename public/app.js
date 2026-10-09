@@ -173,7 +173,7 @@ $("runCode").onclick = () => {
   const blob = new Blob([script], { type: "text/html" }); iframe.src = URL.createObjectURL(blob);
   $("output").textContent = "Running JavaScript…";
   const listener = event => {
-    if (event.source !== iframe.contentWindow || event.data?.source !== "codearena-runner") return;
+    if (event.source !== iframe.contentWindow || event.data?.source !== "rtps-runner") return;
     const prefix = event.data.type === "error" ? "ERROR: " : "";
     if ($("output").textContent === "Running JavaScript…") $("output").textContent = "";
     $("output").textContent += prefix + event.data.value + "\n";

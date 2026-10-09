@@ -2,6 +2,7 @@ const socket = io();
 const $ = id => document.getElementById(id);
 let roomId = location.pathname.match(/^\/room\/([^/]+)/)?.[1] || null;
 let roomState = null, editor = null, currentContest = null, timerInterval = null, myName = sessionStorage.getItem("arenaName") || "";
+let applyingRemoteCode = false;
 $("homeName").value = myName;
 const starterCode = "// Welcome to Real-Time Programming Sandbox!\nconsole.log('Hello, team!');";
 function showError(message) { $("homeError").textContent = message || ""; }
@@ -62,7 +63,7 @@ function initializeEditor(value) {
       roundedSelection: true, padding: { top: 14 }
     });
     editor.onDidChangeModelContent(() => {
-      if (!roomId || !editor) return;
+      if (applyingRemoteCode || !roomId || !editor) return;
       $("syncStatus").textContent = "Syncing…";
       socket.emit("code-change", { roomId, code: editor.getValue() });
       clearTimeout(window.syncLabelTimer);
@@ -93,7 +94,9 @@ socket.on("code-change", data => {
   if (!editor || !data || editor.getValue() === data.code) return;
   const pos = editor.getPosition();
   const scroll = editor.getScrollTop();
-  editor.setValue(data.code);
+  applyingRemoteCode = true;
+editor.setValue(data.code);
+applyingRemoteCode = false;
   if (pos) editor.setPosition(pos);
   editor.setScrollTop(scroll);
   $("syncStatus").textContent = "Live synced";

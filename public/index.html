@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Real-Time Programming Sandbox</title>
+<link rel="stylesheet" href="/style.css">
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.52.2/min/vs/loader.min.js"></script>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="/">⌘ Real-Time Programming Sandbox</a>
+  <span class="tag">LIVE CODING · COLLABORATION · CONTESTS</span>
+  <div class="top-actions"><span id="connection" class="pill">Connecting…</span><button id="copyLink" class="secondary hidden">Copy invite link</button></div>
+</header>
+<main>
+<section id="home" class="home">
+  <div class="hero"><div class="eyebrow">BUILD · COLLABORATE · COMPETE</div><h1>Code together.<br><span>Win together.</span></h1>
+  <p>Create a room, invite teammates, edit code live, export your work, run JavaScript safely in a sandbox, and host friendly coding contests with a live leaderboard.</p></div>
+  <div class="panel create-panel">
+    <h2>Start a coding room</h2>
+    <label>Your display name</label><input id="homeName" maxlength="24" placeholder="e.g. Pulkit" value="">
+    <label>Room name</label><input id="roomTitle" maxlength="60" placeholder="DSA practice session" value="Pair Programming Room">
+    <button id="createRoom" class="primary full">＋ Create room</button>
+    <div class="or">OR JOIN WITH A LINK</div>
+    <label>Room ID</label><input id="joinId" placeholder="Paste room ID or invite link">
+    <button id="joinRoom" class="secondary full">Join room</button>
+    <p id="homeError" class="error"></p>
+  </div>
+</section>
+<section id="workspace" class="workspace hidden">
+  <div class="room-heading"><div><div class="eyebrow">YOUR WORKSPACE</div><h2 id="roomTitleDisplay">Coding Room</h2><p id="roomMeta">Share the link to invite collaborators.</p></div><div class="room-actions"><select id="language"><option value="javascript">JavaScript</option><option value="cpp">C++</option><option value="python">Python</option></select><button id="runCode" class="primary">▶ Run</button><button id="downloadCode" class="secondary">↓ Export</button></div></div>
+  <div class="layout">
+    <section class="editor-card"><div class="card-head"><span><i class="live-dot"></i> SHARED EDITOR</span><span id="syncStatus">Synced</span></div><div id="editor"></div><div class="console-head"><span>OUTPUT / CONSOLE</span><button id="clearOutput" class="tiny">Clear</button></div><pre id="output">Run JavaScript to see output here. C++/Python execution needs a Judge0 API connection (see README).</pre></section>
+    <aside class="sidebar">
+      <section class="panel"><div class="section-head"><h3>People in room</h3><span id="memberCount" class="count">0</span></div><div id="members" class="members"></div></section>
+      <section class="panel contest-panel"><div class="section-head"><h3>Contest</h3><span id="contestStatus" class="status">Not started</span></div>
+        <div id="contestSetup">
+          <label>Contest name</label><input id="contestName" placeholder="Friday DSA challenge" value="Friendly Coding Contest">
+          <label>Prize (non-cash / organizer-provided)</label><input id="contestPrize" placeholder="Certificate, trophy, book…" value="Winner certificate">
+          <label>Duration (minutes, 5–240)</label><input id="contestDuration" type="number" min="5" max="240" value="30">
+          <button id="startContest" class="primary full">Start contest</button>
+        </div>
+        <div id="contestInfo" class="hidden"><div class="prize-box"><span>🏆 PRIZE</span><strong id="prizeText">Winner certificate</strong></div><div class="timer" id="timer">30:00</div><p id="contestMessage" class="muted">Submit your score below when you finish a problem.</p>
+          <div class="score-form"><label>Solved problems</label><input id="solvedInput" type="number" min="0" max="100" value="0"><label>Total score</label><input id="scoreInput" type="number" min="0" max="10000" value="0"><button id="submitScore" class="secondary full">Update my score</button></div>
+          <button id="endContest" class="secondary full hidden">End contest & declare winner</button><button id="awardPrize" class="secondary full hidden">Mark prize awarded</button><p id="awardStatus" class="muted"></p>
+        </div>
+      </section>
+      <section class="panel"><div class="section-head"><h3>Live leaderboard</h3><span class="count">LIVE</span></div><div id="leaderboard" class="leaderboard"><p class="muted">Start a contest to show rankings.</p></div></section>
+    </aside>
+  </div>
+  <p class="disclaimer">Contest scores are currently self-reported for the project demo. Connect a secure code judge and validate test cases server-side before using this for a real contest. Prize delivery is handled by the organizer; no payment system is included.</p>
+</section>
+</main>
+<footer>Real-Time Programming Sandbox · Student project · Use responsibly</footer>
+<script src="/app.js"></script>
+</body></html>
